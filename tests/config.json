@@ -1,0 +1,11 @@
+{
+    "member_acct":{
+       "email":"example@gmail.com",
+       "password":"examplepassword"
+    },
+    "product_info":{
+       "product_name":"Nike Air Force 1 '07",
+       "W/M":"M",
+       "size":"9.5"
+    }
+ }
