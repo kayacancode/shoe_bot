@@ -31,9 +31,9 @@ def search():
 
 
 # filter search options
-def filter():
-    e = data["product_info"]["product_name"]
-    if data["product_info"]["W/M"] == "M":
+def filter_m_w():
+    e = data["product_info"]["W/M"]
+    if e == "M":
         men_selector = driver.find_element_by_xpath("//*[@id='wallNavFG0']/button[1]/span")
         driver.implicitly_wait(1)
         men_selector.click()
@@ -41,24 +41,114 @@ def filter():
         women_selector = driver.find_element_by_xpath("//*[@id='wallNavFG0']/button[2]/div/div")
         driver.implicitly_wait(1)
         women_selector.click()
+"""
+Function filter color would not work because NIKE changes the color positions  each time 
+
+"""
+def filter_color():
+    c = data["product_info"]["Colorway"]
+    if c == "White/White":
+        print("Shown: White/White")
+        white_selector = driver.find_element_by_xpath("//*[@id='wallNavFG2']/button[8]/div")
+        driver.implicitly_wait(1)
+        white_selector.click()
+    elif c == "Black/Back":
+        print("Shown:Black/Black")
+        black_selector = driver.find_element_by_xpath("//*[@id='wallNavFG2']/button[1]/div/div")
+        driver.implicitly_wait(1)
+        black_selector.click()
+    elif c == "Blue/Blue":
+        print("Shown: Blue/Blue")
+        blue_selector = driver.find_element_by_xpath("//*[@id='wallNavFG2']/button[2]/div/div")
+        driver.implicitly_wait(1)
+        blue_selector.click()
+    elif c == "Red/Red":
+        print("Shown: Red/Red")
+        red_selector = driver.find_element_by_xpath("//*[@id='wallNavFG2']/button[7]/div/div")
+        driver.implicitly_wait(1)
+        red_selector.click()
+    elif c == "Brown/Brown":
+        print("Shown: Brown/Brown")
+        brown_selector = driver.find_element_by_xpath("//*[@id='wallNavFG2']/button[3]/div/div")
+        driver.implicitly_wait(1)
+        brown_selector.click()
+    elif c == "Green/Green":
+        print("Shown: Green/Green")
+        green_selector = driver.find_element_by_xpath("//*[@id='wallNavFG2']/button[3]/div/div")
+        driver.implicitly_wait(1)
+        green_selector.click()
+    elif c == "Grey/Grey":
+        print("Shown: Grey/Grey")
+        grey_selector = driver.find_element_by_xpath("//*[@id='wallNavFG2']/button[4]/div/div")
+        driver.implicitly_wait(1)
+        grey_selector.click()
+    elif c == "Orange/Orange":
+        print("Shown: Orange/Orange")
+        orange_selector = driver.find_element_by_xpath("//*[@id='wallNavFG2']/button[5]/div/div")
+        driver.implicitly_wait(1)
+        orange_selector.click()
+    elif c == "Yellow/Yellow":
+        print("Shown: Yellow/Yellow")
+        yellow_selector = driver.find_element_by_xpath("//*[@id='wallNavFG2']/button[10]/div/div")
+        driver.implicitly_wait(1)
+        yellow_selector.click()
+    else:
+        print("Invalid Color")
+"""
+---*Penny for my thoughts*-----
+        -ENTRY|8/15/20 | shoes for example the NIKE Airforce 1's are a vague topic
+        no way with selenium could we factor that one shoe 
+        maybe in the JSON file we would need to add more parameters 
+        for example like search for certain scraping api that gets shoes from websites 
+        so on the web app people will have more parameters to select a certain shoe / color way/ size
+        then the automation code could be tailored for those specific types of shoes instead of one specific shoe 
+        with the more parameters we could use the filter capability that NIKE provides 
+        the question is how to do that with other sites although i am pretty sure that all ecommerce websites have
+        that capability for examples filter on the left side of page to get a more specific type of shoe| 8/16/20
+        -ENTRY| 8/16/20 |Colorway in JSON file it is required to have two words in both sections for example 
+        for a blue pair of shoes blue/blue , for a white pair of shoes white/white , for a red and black shoe
+         red/black .look how ecommerce sites place there different colors ways |
+        NIKE:
+            - Shown: White/White
+            - Shown: Black/Black 
+            - Shown: Pure Platinum/White/Hyper Crimson/Indigo Fog
+        we might have to scrap colors ways from webpage. also we could put price of shoe in JSON config files
+        -Another way to handle data is in the functions require an argument to make it more specific.
+        You can pull the argument data from the JSON file
+"""
 
 
 # click on item
 def click_item():
     d = data["product_info"]["product_name"]
-    if search_term == data["product_info"]["product_name"]:
+    if search_term == d:
         print("valid searched item")
-        if data["product_info"]["W/M"] == "W":
-            print("women's shoe")
-            women_item = driver.find_element_by_xpath("//div[contains(@class, 'product-card__subtitle') and text()='Women\'s Shoe']")
-            driver.implicitly_wait(1)
-            women_item.click()
+        men_item = driver.find_element_by_xpath("//div[@class='product-card__subtitle' and  contains(., \"Men's "
+                                                "Shoe\")]")
+        women_item = driver.find_element_by_xpath("//div[@class='product-card__subtitle' and contains(., "
+                                                  "\"Women's Shoe\")]")
+        m = data["product_info"]["W/M"]
+        if m == men_item:
+            print("Men's Shoe")
+            WebDriverWait(driver, 10).until_not(EC.element_to_be_clickable((By.CLASS_NAME, "product-card__subtitle")))
+            men_item.click()
         else:
-            print("men's shoes")
-            men_item = driver.find_element_by_xpath("//div[contains(@class, 'product-card__subtitle') and text()='Men\'s Shoe']")
+            print("Women's Shoe")
+            WebDriverWait(driver, 10).until_not(EC.element_to_be_clickable((By.CLASS_NAME, "product-card__subtitle")))
+            women_item.click()
+        # if data["product_info"]["W/M"] == "W":
+        #     print("women's shoe")
+        #     women_item = driver.find_element_by_xpath("//div[@class='product-card__subtitle' and contains(., "
+        #                                               "\"Women's Shoe\")]")
+        #     driver.implicitly_wait(1)
+        #     women_item.click()
+        # else:
+        #     print("men's shoes")
+        #     men_item = driver.find_element_by_xpath("//div[@class='product-card__subtitle' and  contains(., \"Men's "
+        #                                             "Shoe\")]")
+        #
+        #     men_item.click()  # not working because the click is intercepted by the img
 
-            driver.implicitly_wait(1)
-            men_item(1)
 
 # women shoe size selection
 def women_shoes():
@@ -244,7 +334,8 @@ def authorization():
 # call each function
 def automate():
     search()
-    filter()
+    filter_m_w()
+    filter_color()
     click_item()
     user_info()
     add_to_cart()
